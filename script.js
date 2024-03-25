@@ -6,8 +6,6 @@ let particlesArray;
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-
-
 const createParticles = () => {
     particlesArray = [];
     const numberOfParticles = 0;
@@ -25,7 +23,6 @@ class Particle {
         this.speedY = Math.random() * 2 - 1;
         this.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
     }
-   
 }
 
 const drawParticles = () => {
@@ -77,13 +74,30 @@ const animate = () => {
     drawParticles();
 }
 
-const mouseMoveHandler = (event) => {
+const moveParticles = (x, y) => {
     for (let i = 0; i < 5; i++) {
         particlesArray.push(new Particle());
-        particlesArray[particlesArray.length - 1].x = event.clientX;
-        particlesArray[particlesArray.length - 1].y = event.clientY;
+        particlesArray[particlesArray.length - 1].x = x;
+        particlesArray[particlesArray.length - 1].y = y;
     }
 };
 
-canvas.addEventListener('mousemove', mouseMoveHandler);
-div.addEventListener('mousemove', mouseMoveHandler);
+canvas.addEventListener('mousemove', (event) => {
+    moveParticles(event.clientX, event.clientY);
+});
+
+canvas.addEventListener('touchmove', (event) => {
+    event.preventDefault();
+    const touch = event.touches[0];
+    moveParticles(touch.clientX, touch.clientY);
+});
+
+div.addEventListener('mousemove', (event) => {
+    moveParticles(event.clientX, event.clientY);
+});
+
+div.addEventListener('touchmove', (event) => {
+    event.preventDefault();
+    const touch = event.touches[0];
+    moveParticles(touch.clientX, touch.clientY);
+});
